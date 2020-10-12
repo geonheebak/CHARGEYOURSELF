@@ -1,0 +1,77 @@
+#include <Wire.h> //I2C 헤더
+
+int SLAVE[4] = {1,2,3,4}; //추가
+
+unsigned long mt1 = 0; //설정루틴x
+
+void setup() {
+ Wire.begin(); // Wire 라이브러리 초기화 .추가
+ Serial.begin(9600);
+
+}
+
+void loop() {
+  Serial.print("Q"); 
+  i2c_communication(); // 슬레이브로 데이터 요구 및 수신 데이터 처리
+  delay(1000);
+
+
+}
+
+void i2c_communication() {
+delay(1000);  
+
+  for(int x=0;x<4;x++)
+  {
+    if(x == 0){
+      Wire.requestFrom(SLAVE[x], 8); // 1 바이트 크기의 데이터 요청
+      int voltage1 = Wire.read(); // 수신 데이터 읽기
+      //Serial.print("DATA, TIME, ");
+      Serial.print(voltage1);
+      //Serial.print(",");
+      delay(1000);
+    }
+    else if(x == 1) 
+    {
+      
+      Wire.requestFrom(SLAVE[x], 8); // 1 바이트 크기의 데이터 요청
+      int voltage2 = Wire.read(); // 수신 데이터 읽기
+      Serial.print(voltage2); // 수신 데이터 출력
+      //Serial.print(",");
+      delay(1000);
+    }
+    else if(x == 2)
+    {
+      
+      Wire.requestFrom(SLAVE[x], 8); // 1 바이트 크기의 데이터 요청
+      int voltage3 = Wire.read(); // 수신 데이터 읽기
+      Serial.print(voltage3);
+      //Serial.print(",");
+      delay(1000);
+    }
+   else if(x == 3)
+    {
+      Wire.requestFrom(SLAVE[x], 4);
+      temp();
+    }
+  }
+}
+
+void temp() {
+  int temp1 = Wire.read();
+  Serial.print(temp1);
+  //Serial.print(",");
+  delay(1000);
+  
+  int temp2 = Wire.read();
+  Serial.print(temp2);
+  //Serial.print(",");
+  delay(1000);
+  
+  int temp3 = Wire.read();
+  Serial.print(temp3);
+  //Serial.print(",");
+  Serial.println();
+  delay(1000);
+   
+}
