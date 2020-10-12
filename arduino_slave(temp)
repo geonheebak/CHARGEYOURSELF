@@ -1,0 +1,42 @@
+#include <Wire.h>
+#define SLAVE 4// 카운터
+
+int p1 = A0; 
+int p2 = A2;
+int p3 = A3;
+
+void setup() {
+  // Wire 라이브러리 초기화
+  // 슬레이브로 참여하기 위해서는 주소를 지정해야 한다.
+  Serial.begin(9600);
+  Wire.begin(SLAVE);
+  // 마스터의 데이터 전송 요구가 있을 때 처리할 함수 등록
+  Wire.onRequest(sendToMaster);
+}
+
+void loop () 
+{
+
+}
+
+
+void sendToMaster() 
+{
+
+  int val = analogRead(p1);
+  int temp = (5.0 * val * 100.0) / 1024;
+  Wire.write(temp);
+  Serial.println(temp);
+
+  int val2 = analogRead(p2);
+  int temp2 = (5.0 * val2 * 100.0) / 1024;
+  Wire.write(temp2);
+  Serial.println(temp2);
+
+  int val3 = analogRead(p3);
+  int temp3 = (5.0 * val3 * 100.0) / 1024;
+  Wire.write(temp3);
+  Serial.println(temp3);
+  delay(1000);
+  
+}
