@@ -1,0 +1,58 @@
+import numpy as np
+import datetime as dt
+import matplotlib.pyplot as pt
+import serial
+import matplotlib.animation as an
+ARD = serial.Serial('COM3', 9600)
+
+
+def Decode(A):
+    x = 0
+    while(True):
+        A = A.decode()
+        A = str(A)
+
+        if A[0] == 'Q':
+            x = dt.datetime.now()
+            if (len(A) == 12):
+                Ard1= int(A[1:2])
+                Ard2 = int(A[2:3])
+                Ard3 = int(A[3:4])
+                Ard4 = int(A[4:6])
+                Ard5 = int(A[6:8])
+                Ard6 = int(A[8:10])
+
+                pt.subplot(2,1,1)
+                pt.scatter(x, Ard1, color='#ff0000')
+                pt.scatter(x*2, Ard2, color='#00ff00')
+                pt.scatter(x*3, Ard3, color='#0000ff')
+
+                pt.subplot(2,1,2)
+                pt.scatter(x, Ard4, color='#ff0000')
+                pt.scatter(x, Ard5, color='#00ff00')
+                pt.scatter(x, Ard6, color='#0000ff')
+                pt.pause(0.001)
+
+
+                result = [Ard1, Ard2, Ard3, Ard4, Ard5, Ard6]
+                return result
+            else:
+                print("Error_lack of number _ %d" % len(A))
+                return False
+
+        else:
+            print("Error_Wrong Signal")
+            return False
+        pt.show()
+
+def Ardread():
+    if ARD.readable():
+        LINE = ARD.readline()
+        code = Decode(LINE)
+        print(code)
+        return code
+    else:
+        print("읽기 실패 from _Ardread_")
+
+while(True):
+    Ardread()
